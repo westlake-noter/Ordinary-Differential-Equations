@@ -1,0 +1,422 @@
+% Sources: original/9.11/18bb734b5546a3fd8359031f627b6c4a_720.png
+%          original/9.11/c37476acefb3e844a2b2f32199edaa74_720.png
+%          original/9.11/f1088b98215381d100f9e593f21641bd_720.png
+%          original/9.11/d594c8b729f47a5861f2a6bccb1b5421_720.png
+%          original/9.11/0609ffb6fda9e963d86257e9bf97eccd_720.png
+%          original/9.11/9c4b06348d9b58c79c3b5cfbaead0fef_720.png
+%          original/9.11/873cfc3f5375463db98d68bf414d1ba2_720.png
+%          original/9.11/b8aa55e7af555136aaa07bd395510e02_720.png
+%          original/9.11/0efa41490121c31dd27cc0d4cd733df9_720.png
+\chapter{Elementary Integral methods}
+
+\textit{For certain types of ODE.}
+
+\begin{remark*}
+For $y'=f(x,y)$ with $f$ continuous on a domain $D\subseteq\mathbb R^2$,
+the slope field is useful numerically, but need not give an exact solution.
+\end{remark*}
+
+\section{Exact Eqn.}
+
+Let $D\subseteq\mathbb R^2$ be a domain and $P,Q\in C^1(D)$. Consider
+\begin{equation}\label{eq:ode-differential-form}
+    P(x,y)\,\dd x+Q(x,y)\,\dd y=0.
+\end{equation}
+
+\begin{remark}
+Near a point where $Q\ne0$, equation~\eqref{eq:ode-differential-form}
+is equivalent to $\dd y/\dd x=-P/Q$.
+Similarly, where $P\ne0$, it is equivalent to $\dd x/\dd y=-Q/P$.
+\end{remark}
+
+\begin{definitionenv}
+Equation~\eqref{eq:ode-differential-form} is \textbf{exact} on $D$ if
+there exists $\Phi\in C^2(D)$ such that
+\[
+    \dd\Phi=P\,\dd x+Q\,\dd y,
+    \qquad\text{i.e.}\qquad \Phi_x=P,\quad\Phi_y=Q.
+\]
+\end{definitionenv}
+
+\begin{propositionenv}\label{prop:ode-exact-necessary}
+If \eqref{eq:ode-differential-form} is exact, then $P_y=Q_x$ on $D$.
+\end{propositionenv}
+
+\begin{proofenv}
+If $\Phi_x=P$ and $\Phi_y=Q$, equality of mixed partial derivatives gives
+\[
+    P_y=\partial_y\partial_x\Phi
+       =\partial_x\partial_y\Phi=Q_x.
+\]
+\end{proofenv}
+
+\begin{theoremenv}\label{thm:ode-exact-simply-connected}
+If $D$ is simply connected and $P_y=Q_x$ on $D$, then
+\eqref{eq:ode-differential-form} is exact.
+\end{theoremenv}
+
+\begin{proofenv}
+Fix $(x_0,y_0)\in D$. For $(x,y)\in D$, choose a piecewise $C^1$ path
+$\gamma$ in $D$ from $(x_0,y_0)$ to $(x,y)$, and set
+\[
+    \Phi(x,y):=\int_\gamma P\,\dd x+Q\,\dd y.
+\]
+By Green's formula and simple connectedness, any two such paths satisfy
+\[
+    \int_{\gamma_1}P\,\dd x+Q\,\dd y
+    =\int_{\gamma_2}P\,\dd x+Q\,\dd y.
+\]
+Thus $\Phi$ is well-defined, and $\Phi_x=P$, $\Phi_y=Q$.
+\end{proofenv}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.64,>=stealth]
+    \draw[thick,slv]
+        (-0.8,-0.55)
+        .. controls (-1.4,1.0) and (-0.4,3.4) .. (1.8,3.75)
+        .. controls (4.7,4.2) and (6.5,3.3) .. (6.4,1.7)
+        .. controls (6.3,-0.6) and (4.1,-1.0) .. (2.0,-0.9)
+        .. controls (0.6,-0.95) and (-0.4,-0.9) .. cycle;
+    \node[slv] at (0.6,3.0) {$D$};
+    \coordinate (A) at (0.25,0.15);
+    \coordinate (B) at (4.35,2.55);
+    \coordinate (M) at (4.35,0.15);
+    \draw[thick,slan,->]
+        (A) .. controls (0.8,2.0) and (2.5,2.65) .. (B);
+    \node[slan] at (1.65,2.25) {$\gamma_1$};
+    \draw[thick,mlv,->] (A) -- (M);
+    \draw[thick,mlv,->] (M) -- (B);
+    \node[mlv] at (4.85,1.25) {$\gamma_2$};
+    \fill (A) circle (2pt) node[below left] {$(x_0,y_0)$};
+    \fill (B) circle (2pt) node[above right] {$(x,y)$};
+    \fill (M) circle (1.5pt) node[below] {$(x,y_0)$};
+\end{tikzpicture}
+\end{center}
+
+\begin{remark}[Green's formula]
+Let $\Omega$ be a bounded plane domain with $\overline\Omega\subset D$
+and piecewise smooth boundary,
+and orient $\gamma=\partial\Omega$ clockwise on the outer boundary and
+counterclockwise on inner boundaries. Then
+\[
+    \oint_\gamma P\,\dd x+Q\,\dd y
+    =\iint_\Omega(P_y-Q_x)\,\dd x\,\dd y.
+\]
+An annulus is not simply connected.
+\begin{center}
+\begin{tikzpicture}[scale=0.7,>=stealth]
+    \fill[mlv!12,even odd rule] (0,0) circle (1.35) (0,0) circle (0.52);
+    \draw[thick,slv] (0,0) circle (1.35);
+    \draw[thick,slv] (0,0) circle (0.52);
+    \draw[thick,slan,->] (1.0,0) arc[start angle=0,end angle=310,radius=1.0];
+\end{tikzpicture}
+\end{center}
+\end{remark}
+
+\begin{exerciseenv}
+For the function $\Phi$ in the preceding construction, verify
+$\Phi_x=P$ and $\Phi_y=Q$.
+\end{exerciseenv}
+
+\Needspace{7\baselineskip}
+\begin{exampleenv}
+For $y\,\dd x+x\,\dd y=0$, we have $P_y=1=Q_x$.
+Along the path $(0,0)\to(x,0)\to(x,y)$,
+\[
+    \Phi(x,y)=\int_0^x0\,\dd s+\int_0^y x\,\dd t=xy.
+\]
+\end{exampleenv}
+
+\begin{exampleenv}
+For $x\,\dd x+y\,\dd y=0$, we have $P_y=0=Q_x$, and
+\[
+    \Phi(x,y)=\int_0^x s\,\dd s+\int_0^y t\,\dd t
+             =\frac12(x^2+y^2).
+\]
+\end{exampleenv}
+
+\begin{exampleenv}
+The equation $y^2\,\dd x+x\,\dd y=0$ is not exact:
+$P_y=2y$ and $Q_x=1$ do not agree on any open domain.
+\end{exampleenv}
+
+\begin{theoremenv}\label{thm:ode-potential-curves}
+Suppose $\dd\Phi=P\,\dd x+Q\,\dd y$ on $D$.
+For any $C\in\mathbb R$, the level set $\Phi(x,y)=C$ locally defines
+an integral curve of \eqref{eq:ode-differential-form} at each point
+where $(P,Q)\ne(0,0)$.
+\end{theoremenv}
+
+\begin{proofenv}
+Let $\Phi(x_0,y_0)=C$. Suppose $Q(x_0,y_0)\ne0$.
+Since $\Phi_y(x_0,y_0)=Q(x_0,y_0)\ne0$, the implicit function theorem
+gives a local graph $y=f(x)$ with $\Phi(x,f(x))=C$. Hence
+\[
+    f'(x)=-\frac{\Phi_x(x,f(x))}{\Phi_y(x,f(x))}
+          =-\frac{P(x,f(x))}{Q(x,f(x))}.
+\]
+The case $P(x_0,y_0)\ne0$ follows by interchanging $x$ and $y$.
+\end{proofenv}
+
+\section{Separable Eqn.}
+
+\begin{definitionenv}
+A first-order equation is \textbf{separable} if it has the form
+\[
+    P(x)\,\dd x+Q(y)\,\dd y=0,
+\]
+where $P$ is independent of $y$ and $Q$ is independent of $x$.
+It is a special case of an exact equation, with
+\[
+    \Phi(x,y)=\int P(x)\,\dd x+\int Q(y)\,\dd y,
+    \qquad \Phi(x,y)=C.
+\]
+\end{definitionenv}
+
+\begin{exampleenv}
+For $y'=(y-1)(y-2)$, on an interval where $y\ne1,2$,
+\[
+    \frac{\dd y}{(y-1)(y-2)}=\dd x,
+    \qquad
+    \int\frac{\dd y}{(y-1)(y-2)}=x+C.
+\]
+There are also two special solutions: $y\equiv1$ and $y\equiv2$.
+\end{exampleenv}
+
+\begin{remark}
+For $y'=f(y)$, every zero $a$ of $f$ gives a constant solution $y\equiv a$.
+\end{remark}
+
+\begin{exampleenv}\label{ex:ode-cube-root}
+For $y'=y^{1/3}$, the function $y\equiv0$ is a special solution.
+Where $y\ne0$,
+\[
+    y^{-1/3}\,\dd y=\dd x,
+    \qquad \frac32y^{2/3}=x+C.
+\]
+If this curve passes through $(x_0,0)$, then $C=-x_0$, so
+\[
+    y^{2/3}=\frac23(x-x_0).
+\]
+\begin{center}
+\begin{tikzpicture}[scale=0.55,>=stealth]
+    \draw[->] (-0.6,0) -- (5.3,0) node[right] {$x$};
+    \draw[->] (0,-3.0) -- (0,3.1) node[above] {$y$};
+    \draw[thick,mlv] (-0.5,0) -- (4.9,0);
+    \draw[thick,slan] plot[domain=1.2:4.0,samples=70]
+        (\x,{pow(2*(\x-1.2)/3,1.5)});
+    \draw[thick,slan] plot[domain=1.2:4.0,samples=70]
+        (\x,{-pow(2*(\x-1.2)/3,1.5)});
+    \fill (1.2,0) circle (2pt);
+    \node[below] at (1.2,-0.12) {$(x_0,0)$};
+\end{tikzpicture}
+\end{center}
+\end{exampleenv}
+
+\begin{remark}
+An ODE may have several solutions for the same initial value.
+\end{remark}
+
+\begin{definitionenv}[Homogeneous Eqn.]
+The functions $M,N$ are \textbf{homogeneous of degree $d$} if
+\[
+    M(tx,ty)=t^dM(x,y),\qquad N(tx,ty)=t^dN(x,y)
+\]
+for every $t>0$ and every $(x,y)$ in their common domain, which is
+invariant under positive scaling.
+If $M,N$ have the same degree, the equation
+$M(x,y)\,\dd x+N(x,y)\,\dd y=0$ is called \textbf{homogeneous}.
+\end{definitionenv}
+
+\Needspace{10\baselineskip}
+\begin{propositionenv}
+On $x>0$, the substitution $y=ux$ reduces a homogeneous equation to
+\[
+    \bigl(M(1,u)+uN(1,u)\bigr)\,\dd x+xN(1,u)\,\dd u=0.
+\]
+Where $M(1,u)+uN(1,u)\ne0$, its separable form is
+\[
+    \frac{\dd x}{x}
+    +\frac{N(1,u)}{M(1,u)+uN(1,u)}\,\dd u=0.
+\]
+\end{propositionenv}
+
+\begin{proofenv}
+Substitute $y=ux$ and $\dd y=u\,\dd x+x\,\dd u$:
+\[
+\begin{aligned}
+    0&=M(x,ux)\,\dd x+N(x,ux)\,\dd(ux)\\
+     &=x^d\bigl[M(1,u)\,\dd x
+       +N(1,u)(u\,\dd x+x\,\dd u)\bigr].
+\end{aligned}
+\]
+Cancel $x^d$ and divide by $x\bigl(M(1,u)+uN(1,u)\bigr)$ where nonzero.
+\end{proofenv}
+
+\section{1-st order linear Eqn}\label{sec:ode-linear}
+
+A first-order linear equation has the form
+\[
+    a_1(x)y'+a_2(x)y+a_3(x)=0.
+\]
+On an interval $I$ where $a_1\ne0$, it can be written as
+\begin{equation}\label{eq:ode-first-order-linear}
+    y'+p(x)y=q(x).
+\end{equation}
+Assume $p,q\in C(I)$.
+
+\begin{propositionenv}
+Let $P$ be an antiderivative of $p$ on $I$. An integrating factor for
+\eqref{eq:ode-first-order-linear} is $e^P$, and its common solution is
+\[
+    y(x)=e^{-P(x)}\left(\int q(x)e^{P(x)}\,\dd x+C\right),
+    \qquad C\in\mathbb R.
+\]
+\end{propositionenv}
+
+\begin{proofenv}
+To obtain $a(y'+py)=(by)'=by'+b'y$, choose $a=b$ and $pa=a'$.
+For $a>0$,
+\[
+    p=\frac{a'}a=(\log a)',\qquad a=e^P.
+\]
+Therefore
+\[
+    (e^Py)'=qe^P,
+    \qquad e^Py=\int qe^P\,\dd x+C.\qedhere
+\]
+\end{proofenv}
+
+\begin{exampleenv}
+For $y'+y=x^2$, take $a(x)=e^x$. Then
+\[
+    (e^xy)'=e^xx^2,
+    \qquad y=e^{-x}\left(\int e^xx^2\,\dd x+C\right).
+\]
+\end{exampleenv}
+
+\section{Structure of Solution Space of linear eqn.}
+
+\begin{remark}
+Abstract methods can study ODEs without exact solution formulas;
+one then seeks qualitative information about the solution space.
+For $y'+p(x)y=q(x)$:
+\begin{enumerate}[label=(\arabic*)]
+    \item Does the common solution contain every solution?
+    \item Does the IVP $y'+p(x)y=q(x)$, $y(x_0)=y_0$ admit a unique solution?
+\end{enumerate}
+\end{remark}
+
+Let $I$ be an open interval and $p,q\in C(I)$. Put
+\[
+    \mathcal S_q:=\{y\in C^1(I):y'+py=q\},
+    \qquad \mathcal S_0:=\{y\in C^1(I):y'+py=0\}.
+\]
+
+\begin{theoremenv}\label{thm:ode-affine-solution-space}
+The solution space $\mathcal S_q$ is an affine space:
+for any $y_p\in\mathcal S_q$,
+\[
+    \mathcal S_q=y_p+\mathcal S_0,
+\]
+where $\mathcal S_0$ is a vector subspace of $C^1(I)$.
+\end{theoremenv}
+
+\begin{proofenv}
+\textbf{Step 1.} If $y_1,y_2\in\mathcal S_q$, then
+\[
+    (y_1-y_2)'+p(y_1-y_2)=q-q=0.
+\]
+Thus $y_1-y_2\in\mathcal S_0$.
+
+\textbf{Step 2.} We have $0\in\mathcal S_0$. If $u,v\in\mathcal S_0$
+and $\alpha,\beta\in\mathbb R$, then
+\[
+    (\alpha u+\beta v)'+p(\alpha u+\beta v)
+    =\alpha(u'+pu)+\beta(v'+pv)=0.
+\]
+Hence $\mathcal S_0$ is a vector space. The formula in
+Section~\ref{sec:ode-linear} gives
+$y_p\in\mathcal S_q$; Step 1 and
+$(y_p+u)'+p(y_p+u)=q$ for $u\in\mathcal S_0$ yield
+$\mathcal S_q=y_p+\mathcal S_0$.
+\end{proofenv}
+
+\begin{remark}
+The same conclusion holds for higher-order linear equations
+\[
+    y^{(m)}+a_1(x)y^{(m-1)}+\cdots+a_m(x)y=q(x),
+\]
+with continuous coefficients on an interval.
+\end{remark}
+
+\begin{definitionenv}
+A linear equation is \textbf{homogeneous} if $q\equiv0$.
+\end{definitionenv}
+
+\begin{theoremenv}\label{thm:ode-linear-ivp}
+For every $x_0\in I$ and $y_0\in\mathbb R$, the initial value problem
+\[
+    \begin{cases}
+        y'+p(x)y=q(x),\\
+        y(x_0)=y_0
+    \end{cases}
+\]
+has a unique solution on $I$.
+\end{theoremenv}
+
+\begin{proofenv}
+\textbf{Existence.} Set $A(x)=\exp\bigl(\int_{x_0}^x p(t)\,\dd t\bigr)$.
+The common solution gives
+\[
+    y(x)=A(x)^{-1}\left(y_0+\int_{x_0}^x A(t)q(t)\,\dd t\right),
+\]
+which satisfies the equation and $y(x_0)=y_0$.
+
+\textbf{Uniqueness: Method 1 (integrating factor).}
+The difference $z$ of two solutions satisfies
+$z'+pz=0$ and $z(x_0)=0$. Thus
+\[
+    (Az)'=A(z'+pz)=0,
+    \qquad A(x)z(x)=A(x_0)z(x_0)=0.
+\]
+Since $A(x)>0$, we obtain $z\equiv0$.
+\end{proofenv}
+
+\Needspace{25\baselineskip}
+\begin{remark}[Method 2: separation of variables]
+Consider $y'+py=0$ with $y(x_0)=0$. Where $y\ne0$,
+\[
+    \frac{y'}y+p(x)=0,
+    \qquad \frac{\dd y}{y}+p(x)\,\dd x=0.
+\]
+Suppose $y>0$ on $(x_0,x_1]$. For $x_0<t<x_1$,
+\[
+    \int_{y(t)}^{y(x_1)}\frac{\dd u}{u}
+    +\int_t^{x_1}p(x)\,\dd x=0.
+\]
+As $t\downarrow x_0$, the first integral tends to $+\infty$, while the
+second has a finite limit, a contradiction.
+\begin{center}
+\begin{tikzpicture}[scale=0.7,>=stealth]
+    \draw[->] (-0.2,0) -- (4.0,0) node[right] {$x$};
+    \draw[->] (0,-0.2) -- (0,2.1) node[above] {$y$};
+    \draw[thick,slan] (1,0) .. controls (1.4,0.0) and (2.3,0.8) .. (3.3,1.7);
+    \draw[dashed] (3,0) -- (3,1.45);
+    \fill (1,0) circle (2pt) node[below] {$x_0$};
+    \node[below] at (3,0) {$x_1$};
+    \begin{scope}[xshift=6cm]
+        \draw[->] (-0.2,0) -- (4.0,0) node[right] {$x$};
+        \draw[->] (0,-0.8) -- (0,2.1) node[above] {$y$};
+        \draw[thick,slan] (0.7,0) .. controls (1.0,0.55) and (1.2,0.55) .. (1.5,0)
+            .. controls (1.7,-0.25) and (1.85,-0.25) .. (2.0,0)
+            .. controls (2.45,1.25) and (2.85,1.25) .. (3.3,0);
+        \fill (0.7,0) circle (2pt) node[below] {$x_0$};
+    \end{scope}
+\end{tikzpicture}
+\end{center}
+\end{remark}
+
+\begin{exerciseenv}
+Give a rigorous proof of uniqueness by the second method.
+\end{exerciseenv}
